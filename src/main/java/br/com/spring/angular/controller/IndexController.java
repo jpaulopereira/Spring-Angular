@@ -57,4 +57,29 @@ public class IndexController {
        List<Usuario> list = usuarioRepository.findAll();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    @PostMapping
+    public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario ) {
+
+        Usuario usuarioSalvo  = usuarioRepository.save(usuario);
+        return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<Usuario> atualizar(@RequestBody Usuario usuario ) {
+        //save tmb atualiza(Tem que passar o id se não cria um usuári novo, opcional usar @PathVariable)
+        Usuario usuarioSalvo  = usuarioRepository.save(usuario);
+        return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> apagarPorId(@PathVariable Long id) {
+        if (usuarioRepository.existsById(id)) {
+            usuarioRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
+
