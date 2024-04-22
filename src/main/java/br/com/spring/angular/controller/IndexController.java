@@ -47,28 +47,37 @@ public class IndexController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> init2(@PathVariable(value = "id") Long id){
+    public ResponseEntity<Usuario> init2(@PathVariable(value = "id") Long id) {
         Optional<Usuario> usuario = usuarioRepository.findById(id);
         return new ResponseEntity<>(usuario.get(), HttpStatus.OK);
     }
 
     @GetMapping("/find-all")
-    public ResponseEntity<List<Usuario>> findAll(){
-       List<Usuario> list = usuarioRepository.findAll();
+    public ResponseEntity<List<Usuario>> findAll() {
+        List<Usuario> list = usuarioRepository.findAll();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario ) {
+    @PostMapping("/cadastrar")
+    public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario) {
 
-        Usuario usuarioSalvo  = usuarioRepository.save(usuario);
+        for (int posicao = 0; posicao < usuario.getTelefones().size(); posicao++) {
+            usuario.getTelefones().get(posicao).setUsuario(usuario);
+        }
+
+        Usuario usuarioSalvo = usuarioRepository.save(usuario);
         return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<Usuario> atualizar(@RequestBody Usuario usuario ) {
+    public ResponseEntity<Usuario> atualizar(@RequestBody Usuario usuario) {
         //save tmb atualiza(Tem que passar o id se não cria um usuári novo, opcional usar @PathVariable)
-        Usuario usuarioSalvo  = usuarioRepository.save(usuario);
+
+        for (int posicao = 0; posicao < usuario.getTelefones().size(); posicao++) {
+            usuario.getTelefones().get(posicao).setUsuario(usuario);
+        }
+
+        Usuario usuarioSalvo = usuarioRepository.save(usuario);
         return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.OK);
     }
 

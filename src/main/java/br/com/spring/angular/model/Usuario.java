@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -28,4 +30,9 @@ public class Usuario implements Serializable {
     private String senha;
 
     private String nome;
+
+    //mappedBy: indica que a relação é bidirecional, mas controlada por outra entidade
+    //orphanRemoval: Se você remover um Usuario, os Telefones relacionados não serão removidos automaticamente.
+    @OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Telefone> telefones = new ArrayList<>();
 }
